@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Portfolio</title>
+    <link rel="stylesheet" href="TEST1_styles.css">
+    <style>
+        .project-title {
+            font-weight: bold;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .gallery-item .description {
+            margin-top: 0.5rem;
+            text-align: center;
+        }
+
+        .project-link {
+            display: block;
+            text-align: center;
+            margin-top: 0.5rem;
+            font-weight: bold;
+            color: purple;
+            text-decoration: none;
+        }
+
+        .project-link:hover {
+            text-decoration: underline;
+        }
+
+        .carousel-controls {
+            display: flex;
+            justify-content: space-between;
+            visibility: hidden; /* Default to hidden unless needed */
+        }
+
+        .image-carousel img.active {
+            display: block;
+            margin: 0 auto;
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const tags = document.querySelectorAll(".tag");
+            const galleryItems = document.querySelectorAll(".gallery-item");
+
+            tags.forEach(tag => {
+                tag.addEventListener("click", () => {
+                    const tagFilter = tag.dataset.tag;
+
+                    galleryItems.forEach(item => {
+                        const itemTags = item.dataset.tags.split(",");
+                        if (tagFilter === "all" || itemTags.includes(tagFilter)) {
+                            item.classList.remove("hidden");
+                        } else {
+                            item.classList.add("hidden");
+                        }
+                    });
+                });
+            });
+
+            // Initialize carousels
+            const carousels = document.querySelectorAll(".image-carousel");
+            carousels.forEach(carousel => {
+                const images = carousel.querySelectorAll("img");
+                const prevButton = carousel.querySelector(".prev");
+                const nextButton = carousel.querySelector(".next");
+
+                if (images.length > 1) {
+                    let currentIndex = 0;
+
+                    const showImage = index => {
+                        images.forEach((img, i) => {
+                            img.classList.toggle("active", i === index);
+                        });
+                    };
+
+                    prevButton.addEventListener("click", event => {
+                        event.stopPropagation();
+                        currentIndex = (currentIndex - 1 + images.length) % images.length;
+                        showImage(currentIndex);
+                    });
+
+                    nextButton.addEventListener("click", event => {
+                        event.stopPropagation();
+                        currentIndex = (currentIndex + 1) % images.length;
+                        showImage(currentIndex);
+                    });
+
+                    // Show the first image initially
+                    showImage(currentIndex);
+                    carousel.querySelector(".carousel-controls").style.visibility = "visible";
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+
+<header>
+    <h1>My Website Portfolio</h1>
+    <p>Scroll through my projects and click to visit the live sites!</p>
+</header>
+
+<div class="tags">
+    <div class="tag" data-tag="all">All</div>
+    <div class="tag" data-tag="web-design">Web Design</div>
+    <div class="tag" data-tag="software">Software</div>
+    <div class="tag" data-tag="html-art">HTML Art</div>
+    <div class="tag" data-tag="about-me">About Me</div>
+    <div class="tag" data-tag="blog">Blog</div>
+</div>
+
+
+
+<section class="gallery">
+    <div class="gallery-item" data-tags="web-design">
+        <div class="image-carousel">
+            <img src="project1-thumbnail.jpg" alt="Project 1" class="active">
+            <img src="project1-thumbnail2.jpg" alt="Project 1 Alternate">
+            <div class="carousel-controls">
+                <button class="prev">&lt;</button>
+                <button class="next">&gt;</button>
+            </div>
+        </div>
+        <div class="description">Project 1: A project.</div>
+        <a class="project-link" href="https://example.com/project1" target="_blank">Visit Project 1</a>
+    </div>
+
+    <div class="gallery-item" data-tags="software,web-design">
+        <div class="image-carousel">
+            <img src="project2-thumbnail.jpg" alt="Project 2" class="active">
+            <img src="project2-thumbnail2.jpg" alt="Project 2 Alternate">
+            <div class="carousel-controls">
+                <button class="prev">&lt;</button>
+                <button class="next">&gt;</button>
+            </div>
+        </div>
+        <div class="description">Project 2: Another project.</div>
+        <a class="project-link" href="https://example.com/project2" target="_blank">Visit Project 2</a>
+    </div>
+
+    <div class="gallery-item" data-tags="html-art">
+        <div class="image-carousel">
+            <img src="StarryNiteThumbnail.png" alt="Starry Night Recreation" class="active">
+            <img src="StarryNiteAlternate.png" alt="Starry Night Alternate">
+            <div class="carousel-controls">
+                <button class="prev">&lt;</button>
+                <button class="next">&gt;</button>
+            </div>
+        </div>
+        <div class="description">Starry Night Recreation: A piece of HTML art inspired by Van Gogh.</div>
+        <a class="project-link" href="starrynite.html" target="_blank">Visit Starry Night Recreation</a>
+    </div>
+
+    <div class="gallery-item" data-tags="html-art">
+        <div class="image-carousel">
+            <img src="MonaLisaThumbnail.png" alt="Mona Lisa Recreation" class="active">
+            <div class="carousel-controls">
+                <button class="prev">&lt;</button>
+                <button class="next">&gt;</button>
+            </div>
+        </div>
+        <div class="description">Mona Lisa Recreation: A reinterpretation using only HTML and CSS.</div>
+        <a class="project-link" href="monana.html" target="_blank">Visit Mona Lisa Recreation</a>
+    </div>
+
+    <div class="gallery-item" data-tags="html-art">
+        <div class="image-carousel">
+            <img src="classicalpainting.png" alt="Classical Painting Styles" class="active">
+            <div class="carousel-controls">
+                <button class="prev">&lt;</button>
+                <button class="next">&gt;</button>
+            </div>
+        </div>
+        <div class="description">classical art using modern tools.</div>
+        <a class="project-link" href="classicalpaintingstyles.html" target="_blank">Visit Classical Painting Styles</a>
+    </div>
+</section>
+
+
+
+<footer>
+    <p>&copy; 2025 Your Name. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

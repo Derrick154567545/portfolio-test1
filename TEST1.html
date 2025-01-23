@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Portfolio</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+
+        header {
+            text-align: center;
+            padding: 20px;
+            background-color: #333;
+            color: white;
+        }
+
+        nav {
+            display: flex;
+            justify-content: center;
+            background-color: #444;
+            padding: 10px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            cursor: pointer;
+        }
+
+        nav a:hover {
+            background-color: #555;
+        }
+
+        .gallery {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .gallery.active {
+            display: flex;
+        }
+
+        .gallery-item {
+            position: relative;
+            width: 300px;
+            border: 5px solid #333;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .gallery-item img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        .gallery-item .description {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #333;
+            text-align: center;
+        }
+
+        .gallery-item a.project-link {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            text-indent: -9999px;
+        }
+
+        .image-carousel {
+            position: relative;
+        }
+
+        .image-carousel img {
+            display: none;
+        }
+
+        .image-carousel img.active {
+            display: block;
+        }
+
+        .carousel-controls {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+        }
+
+        .carousel-controls button {
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            z-index: 100;
+        }
+
+        .carousel-controls button:hover {
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #333;
+            color: white;
+            margin-top: 20px;
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const navLinks = document.querySelectorAll("nav a");
+            const galleries = document.querySelectorAll(".gallery");
+
+            navLinks.forEach(link => {
+                link.addEventListener("click", function (event) {
+                    event.preventDefault();
+                    const targetId = link.getAttribute("href").substring(1);
+
+                    if (targetId === "all-projects") {
+                        galleries.forEach(gallery => gallery.classList.add("active"));
+                    } else {
+                        galleries.forEach(gallery => {
+                            gallery.classList.remove("active");
+                            if (gallery.id === targetId) {
+                                gallery.classList.add("active");
+                            }
+                        });
+                    }
+                });
+            });
+
+            // Show all galleries by default
+            galleries.forEach(gallery => gallery.classList.add("active"));
+
+            // Initialize carousels
+            const carousels = document.querySelectorAll(".image-carousel");
+            carousels.forEach(carousel => {
+                const images = carousel.querySelectorAll("img");
+                const prevButton = carousel.querySelector(".prev");
+                const nextButton = carousel.querySelector(".next");
+                let currentIndex = 0;
+
+                const showImage = index => {
+                    images.forEach((img, i) => {
+                        img.classList.toggle("active", i === index);
+                    });
+                };
+
+                prevButton.addEventListener("click", event => {
+                    event.stopPropagation();
+                    currentIndex = (currentIndex - 1 + images.length) % images.length;
+                    showImage(currentIndex);
+                });
+
+                nextButton.addEventListener("click", event => {
+                    event.stopPropagation();
+                    currentIndex = (currentIndex + 1) % images.length;
+                    showImage(currentIndex);
+                });
+
+                // Show the first image initially
+                showImage(currentIndex);
+            });
+        });
+    </script>
+</head>
+<body>
+
+<header>
+    <h1>My Website Portfolio</h1>
+    <p>Scroll through my projects and click to visit the live sites!</p>
+</header>
+
+<nav>
+    <a href="#all-projects">All Projects</a>
+    <a href="#web-design">Web Design</a>
+    <a href="#software">Software</a>
+    <a href="#profile">About Me</a>
+    <a href="#html-art">HTML Art</a>
+</nav>
+
+<section id="web-design" class="gallery">
+    <div class="gallery-item">
+        <div class="image-carousel">
+            <img src="project1-thumbnail.jpg" alt="Project 1" class="active">
+            <img src="project1-thumbnail2.jpg" alt="Project 1 Alternate">
+            <div class="carousel-controls">
+                <button class="prev">&lt;</button>
+                <button class="next">&gt;</button>
+            </div>
+        </div>
+        <div class="description">Project 1: A stunning web design project showcasing creativity.</div>
+        <a class="project-link" href="https://example.com/project1" target="_blank">Visit Project 1</a>
+    </div>
+</section>
+
+<section id="software" class="gallery">
+    <div class="gallery-item">
+        <div class="image-carousel">
+            <img src="project2-thumbnail.jpg" alt="Project 2" class="active">
+            <img src="project2-thumbnail2.jpg" alt="Project 2 Alternate">
+            <div class="carousel-controls">
+                <button class="prev">&lt;</button>
+                <button class="next">&gt;</button>
+            </div>
+        </div>
+        <div class="description">Project 2: An innovative e-commerce site built for success.</div>
+        <a class="project-link" href="https://example.com/project2" target="_blank">Visit Project 2</a>
+    </div>
+</section>
+
+<section id="profile" class="gallery">
+    <div class="gallery-item">
+        <div class="image-carousel">
+            <img src="project3-thumbnail.jpg" alt="Project 3" class="active">
+            <img src="project3-thumbnail2.jpg" alt="Project 3 Alternate">
+            <div class="carousel-controls">
+                <button class="prev">&lt;</button>
+                <button class="next">&gt;</button>
+            </div>
+        </div>
+        <div class="description">Project 3: A personal portfolio to showcase individual talent.</div>
+        <a class="project-link" href="https://example.com/project3" target="_blank">Visit Project 3</a>
+    </div>
+</section>
+<section id="html-art" class="gallery">
+    <div class="gallery-item">
+        <div class="image-carousel">
+            <img src="StarryNiteThumbnail.png" alt="Project 1" class="active">
+            <img src="StarryNiteAlternate.png" alt="Project 1 Alternate">
+            <div class="carousel-controls">
+                <button class="prev">&lt;</button>
+                <button class="next">&gt;</button>
+            </div>
+        </div>
+        <div class="description">Starry Night Recreation: A piece of HTML art inspired by Van Gogh.</div>
+        <a href="starrynite.html" target="_blank">Visit Project 1</a>
+    </div>
+    <div class="gallery-item">
+        <div class="image-carousel">
+            <img src="MonaLisaThumbnail.png" alt="Project 2" class="active">
+            <div class="carousel-controls">
+                <button class="prev">&lt;</button>
+                <button class="next">&gt;</button>
+            </div>
+        </div>
+        <div class="description">Mona Lisa Recreation: A reinterpretation using only HTML and CSS.</div>
+        <a href="monana.html" target="_blank">Visit Project 2</a>
+    </div>
+    <div class="gallery-item">
+        <div class="image-carousel">
+            <img src="classicalpainting.png" alt="Project 3" class="active">
+            <div class="carousel-controls">
+                <button class="prev">&lt;</button>
+                <button class="next">&gt;</button>
+            </div>
+        </div>
+        <div class="description">Classical Painting Styles: A study of classical art using modern tools.</div>
+        <a href="classicalpaintingstyles.html" target="_blank">Visit Project 3</a>
+    </div>
+</section>
+
+<footer>
+    <p>&copy; 2025 Your Name. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
